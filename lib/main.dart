@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:multidescuentos/classes/Promo.dart';
 import 'package:multidescuentos/widgets/brandcard.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
@@ -51,28 +52,59 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         toolbarHeight: 70,
-        title: TextField(
-          style: const TextStyle(color: Colors.black, fontSize: 18),
-          cursorColor: Colors.black,
-          decoration: InputDecoration(
-            hintText: 'Búsqueda en Multidescuentos',
-            hintStyle: const TextStyle(color: Colors.black38),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                width: 0,
-                style: BorderStyle.none,
+        title: TypeAheadField(
+          animationStart: 0,
+          animationDuration: Duration.zero,
+          textFieldConfiguration: TextFieldConfiguration(
+            style: const TextStyle(color: Colors.black, fontSize: 18),
+            cursorColor: Colors.black,
+            decoration: InputDecoration(
+              hintText: 'Búsqueda en Multidescuentos',
+              hintStyle: const TextStyle(color: Colors.black38),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
               ),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-                vertical: 0, horizontal: 13
-            ),
-            filled: true,
-            fillColor: Colors.white,
+              contentPadding: const EdgeInsets.symmetric(
+                  vertical: 0, horizontal: 13
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            )
           ),
-          //onChanged: (value) {
-          //  fetchPromos(value);
-          //},
+          suggestionsBoxDecoration: const SuggestionsBoxDecoration(
+              color: Colors.white,
+              shadowColor: Colors.black,
+
+          ),
+          suggestionsCallback: (pattern) async{
+            List<String> matches = <String>[];
+            matches.addAll(await fetchPromos() ?? []);
+
+            matches.retainWhere((s){
+              return s.toLowerCase().contains(pattern.toLowerCase());
+            });
+            return matches;
+          },
+          itemBuilder: (context, sone) {
+            return Card(
+              elevation: 0,
+              color: Colors.white,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+              child: SizedBox(
+                height: 19,
+                child: Text(sone.toString()),
+              ),
+            );
+          },
+          onSuggestionSelected: (suggestion) {
+            print(suggestion);
+          },
         ),
         leading: GestureDetector(
           onTap: () {
@@ -117,6 +149,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  Future<List<String>?> fetchPromos() async {
+    final response = await http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/'));
+    if (response.statusCode == 200) {
+      List<dynamic> rs = jsonDecode(response.body) as List<dynamic>;
+      List<String> promosFinds = rs.map((e) => e['title'] as String).toList();
+      return promosFinds;
+    } else {
+      return null;
+    }
   }
 }
 /*
