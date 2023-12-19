@@ -4,21 +4,27 @@ import 'package:flutter/cupertino.dart';
 class Promo {
   final int id;
   final String title;
+  final String type;
+
+  static String SUGGESTION_TYPE = "suggestion";
+  static String HISTORY_TYPE = "history";
 
   const Promo({
     required this.id,
     required this.title,
+    required this.type,
   });
 
   factory Promo.fromJson(Map<String, dynamic> json) {
     return Promo(
       id: json['id'] as int,
       title: json['title'] as String,
+      type: json['type'] as String,
     );
   }
 
   @override
-  bool operator ==(Object other) {
+  bool operator == (Object other) {
     if (other.runtimeType != runtimeType) {
       return false;
     }
