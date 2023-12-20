@@ -7,31 +7,49 @@ class LateralMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        children: <Widget>[
+        padding: EdgeInsets.zero,
+        children: [
           const UserAccountsDrawerHeader(
+            currentAccountPicture: CircleAvatar(),
             accountName: Text("CODEA APP"),
             accountEmail: Text("informes@gmail.com"),
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage("https://multidescuentos.com.mx/logos/encab3.jpg"),
-                    fit: BoxFit.cover
-                )
+              color: Colors.red,
+              image: DecorationImage(
+                image: AssetImage('assets/images/multi_menu.png'),
+                alignment: Alignment.topCenter,
+                fit: BoxFit.cover,
+              )
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.home),
             title: const Text("Inicio"),
             onTap: (){},
           ),
-          const ListTile(
-            title: Text("Notificaciones"),
+          ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text("Notificaciones"),
+            onTap: (){},
           ),
-          const ListTile(
-            title: Text("Descuentos cercanos"),
+          ListTile(
+            leading: const Icon(Icons.near_me),
+            title: const Text("Descuentos cercanos"),
+            onTap: (){},
           ),
-          const ListTile(
-            title: Text("Acerca de Multidescuentos"),
-          )
-
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.share),
+            title: const Text("Comparte aplicación"),
+            onTap: (){},
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text("Acerca de Multidescuentos"),
+            onTap: () {
+              Navigator.popAndPushNamed(context, 'about');
+            },
+          ),
         ],
       ) ,
     );
