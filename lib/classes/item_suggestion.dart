@@ -1,25 +1,26 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 @immutable
-class Promo {
+class ItemSuggestion {
   final int id;
   final String title;
-  final String type;
+  String? image;
+  String? type;
 
   static String SUGGESTION_TYPE = "suggestion";
   static String HISTORY_TYPE = "history";
 
-  const Promo({
+  ItemSuggestion({
     required this.id,
     required this.title,
-    required this.type,
+    this.image,
+    this.type
   });
 
-  factory Promo.fromJson(Map<String, dynamic> json) {
-    return Promo(
+  factory ItemSuggestion.fromJson(Map<String, dynamic> json) {
+    return ItemSuggestion(
       id: json['id'] as int,
-      title: json['title'] as String,
-      type: json['type'] as String,
+      title: json['nombre'] as String,
     );
   }
 
@@ -28,7 +29,7 @@ class Promo {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is Promo && other.id == id && other.title == title;
+    return other is ItemSuggestion && other.id == id && other.title == title;
   }
 
   @override

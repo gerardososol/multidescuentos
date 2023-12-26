@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multidescuentos/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:multidescuentos/presentation/search_promos_provider.dart';
@@ -26,9 +27,10 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        initialRoute: '/',
+        initialRoute: '/splash',
         routes: <String, WidgetBuilder>{
           '/': (BuildContext context) => const HomeScreen(title: 'Multidescuentos'),
+          '/splash': (context) => const SplashScreen(),
           'promoviewer': (BuildContext context) => const ViewPromo(),
           'about': (BuildContext context) => const AboutPage(),
         },

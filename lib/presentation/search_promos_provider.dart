@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../classes/Promo.dart';
+import '../classes/item_suggestion.dart';
 
 class SearchPromosProvider extends ChangeNotifier{
-  Promo? promo;
+  ItemSuggestion? promo;
 
-  Future<void> viewItem(Promo promo) async{
+  Future<void> viewItem(ItemSuggestion promo) async{
     this.promo = promo;
+    notifyListeners();
   }
 }

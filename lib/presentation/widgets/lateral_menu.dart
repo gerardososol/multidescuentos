@@ -14,7 +14,7 @@ class LateralMenu extends StatelessWidget {
             accountName: Text("CODEA APP"),
             accountEmail: Text("informes@gmail.com"),
             decoration: BoxDecoration(
-              color: Colors.red,
+              color: Color.fromRGBO(225, 9, 12, 1),
               image: DecorationImage(
                 image: AssetImage('assets/images/multi_menu.png'),
                 alignment: Alignment.topCenter,

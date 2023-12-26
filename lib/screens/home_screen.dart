@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:multidescuentos/presentation/search_promos_provider.dart';
 import 'package:multidescuentos/presentation/widgets/lateral_menu.dart';
-import 'package:multidescuentos/presentation/widgets/search_title_field.dart';
+import 'package:multidescuentos/presentation/widgets/suggestion_field_title.dart';
 import 'package:provider/provider.dart';
 
 import '../presentation/widgets/panel_promos.dart';
@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final searchPromoProvider = context.watch<SearchPromosProvider>();
+    final searchPromoProvider = context.read<SearchPromosProvider>();
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -31,7 +31,15 @@ class HomeScreen extends StatelessWidget{
           ),
         ),
         toolbarHeight: 60,
-        title: const SearchTitleField(),
+        title: SuggestionFieldTitle(
+          onValue: (value) => searchPromoProvider.viewItem(value),
+          itemDetailPage: 'promoviewer',
+          notFoundText: "Ninguna coincidencia para el texto indicado",
+          prompt: "Búsqueda en multidescuentos",
+          idFetch: 'id',
+          titleFetch: 'nombre',
+          SID: 'TypeAheadFieldTitlePrincipalScreen',
+        ),
         leading: GestureDetector(
           onTap: () {
             scaffoldKey.currentState?.openDrawer();

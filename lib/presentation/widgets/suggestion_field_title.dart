@@ -3,12 +3,29 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
-import '../../classes/Promo.dart';
+import '../../classes/item_suggestion.dart';
+import '../../services/services_get_data.dart';
 
-class SearchTitleField extends StatelessWidget {
-  const SearchTitleField({Key? key}) : super(key: key);
+class SuggestionFieldTitle extends StatelessWidget {
+  final ValueChanged<ItemSuggestion> onValue;
+  final String prompt;
+  final String notFoundText;
+  final String itemDetailPage;
+  final String SID;
+  final String idFetch;
+  final String titleFetch;
+
+  const SuggestionFieldTitle({
+    Key? key,
+    required this.onValue,
+    required this.prompt,
+    required this.notFoundText,
+    required this.itemDetailPage,
+    required this.idFetch,
+    required this.titleFetch,
+    required this.SID
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +37,10 @@ class SearchTitleField extends StatelessWidget {
       hideOnUnfocus: true,
       controller: typeAheadController,
       suggestionsController: suggestionController,
-      emptyBuilder: (value) {
-        var localizedMessage = "Ninguna coincidencia";
-        return Text(localizedMessage);
-      },
+      //emptyBuilder: (value) {
+      //  var localizedMessage = notFoundText;
+      //  return Text(localizedMessage);
+      //},
       builder: (context, controller, focusNode) {
         return TextField(
           controller: controller,
@@ -41,7 +58,7 @@ class SearchTitleField extends StatelessWidget {
                 style: BorderStyle.none,
               ),
             ),
-            hintText: 'Búsqueda en Multidescuentos',
+            hintText: prompt,
             hintStyle: const TextStyle(color: Colors.black38),
             contentPadding: const EdgeInsets.symmetric(
                 vertical: 0, horizontal: 13
@@ -65,16 +82,19 @@ class SearchTitleField extends StatelessWidget {
         return const Divider(height: 1);
       },
       suggestionsCallback: (pattern) async{
-        List<List<Promo>> matches = await fetchPromos(pattern) ?? [];
+        List<List<ItemSuggestion>> matches = await fetchData(pattern);
 
         int hsMax = matches.last.isEmpty ? 5 : 2;
-        hsMax = matches.first.isEmpty ? 0 : matches.first.length < hsMax ? matches.first.length : hsMax;
+        hsMax = matches.first.isEmpty
+            ? 0
+            : matches.first.length < hsMax
+              ? matches.first.length : hsMax;
 
         matches.first.retainWhere((s) {
           return s.title.toLowerCase().contains(pattern.toLowerCase());
         });
 
-        List<Promo> x1 = [];
+        List<ItemSuggestion> x1 = [];
         if (hsMax > 0 && hsMax <= matches.first.length) {
           x1 = List.from(matches.first.getRange(0, hsMax));
         }
@@ -94,9 +114,8 @@ class SearchTitleField extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ListTile(
-                contentPadding: const EdgeInsets.fromLTRB(5, 1, 5, 0),
                 title: Text(promo.title),
-                leading: promo.type == Promo.SUGGESTION_TYPE
+                leading: promo.type == ItemSuggestion.SUGGESTION_TYPE
                     ? const Icon(Icons.search):const Icon(Icons.history),
               ),
             ],
@@ -107,6 +126,8 @@ class SearchTitleField extends StatelessWidget {
         saveSuggestion(suggestion);
         typeAheadController.text = suggestion.title;
         suggestionController.close();
+        onValue(suggestion);
+        Navigator.pushNamed(context, itemDetailPage);
       },
     );
   }
@@ -122,30 +143,28 @@ class SearchTitleField extends StatelessWidget {
     prefs.setStringList("historySearch", newList);
   }
 
-  Future<List<List<Promo>>> fetchPromos(String pattern) async {
+  Future<List<List<ItemSuggestion>>> fetchData(String pattern) async {
     final SharedPreferences prefs = await SharedPreferences
         .getInstance();
     final List<String>? hS = prefs.getStringList('historySearch');
-    final List<Promo>? hSPromoP = hS?.map((e) =>
-        Promo(id: -1, title: e, type: Promo.HISTORY_TYPE)).toList();
-    List<Promo> hsPromo = hSPromoP ?? [];
+    final List<ItemSuggestion>? hSSuggP = hS?.map((e) =>
+        ItemSuggestion(id: -1, title: e, type: ItemSuggestion.HISTORY_TYPE)).toList();
+    List<ItemSuggestion> hsSugg = hSSuggP ?? [];
 
-    List<Promo> promosFinds = [];
+    List<ItemSuggestion> itemsFinds = [];
     if (pattern.isNotEmpty) {
-      final response = await http.get(Uri.parse(
-          'http://multidescuentos.com.mx/api_multidescuento/index.php/getData/getSuggest?search=$pattern')
-      );
-      if (response.statusCode == 200) {
-        var rs = jsonDecode(response.body);
+      final response = await ServicesGetData().getData(identifier: SID, data: pattern);
+      if (response?.statusCode == 200) {
+        var rs = jsonDecode(response!.body);
         List<dynamic> data = rs['data'] as List<dynamic>;
-        promosFinds = data.map(
-                (e) => Promo(id: -1, title: e['nombre'], type: Promo.SUGGESTION_TYPE)
+        itemsFinds = data.map(
+                (e) => ItemSuggestion(id: e[idFetch], title: e[titleFetch], type: ItemSuggestion.SUGGESTION_TYPE)
         ).toList();
       }
     }
-    List<List<Promo>> returnList = [];
-    returnList.add(hsPromo);
-    returnList.add(promosFinds);
+    List<List<ItemSuggestion>> returnList = [];
+    returnList.add(hsSugg);
+    returnList.add(itemsFinds);
 
     return returnList;
   }
