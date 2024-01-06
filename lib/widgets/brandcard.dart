@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:multidescuentos/classes/item_suggestion.dart';
 
 class BrandCard extends StatelessWidget {
-  const BrandCard({Key? key}) : super(key: key);
+  final ItemSuggestion suggestion;
+  final String defaultImage;
+  const BrandCard({Key? key, required this.suggestion, required this.defaultImage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class BrandCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Image.network(
-            'https://picsum.photos/250?image=9',
+            suggestion.image ?? defaultImage,
             width: 135,
           ),
           Row(

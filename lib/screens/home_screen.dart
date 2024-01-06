@@ -32,13 +32,13 @@ class HomeScreen extends StatelessWidget{
         ),
         toolbarHeight: 60,
         title: SuggestionFieldTitle(
-          onValue: (value) => searchPromoProvider.viewItem(value),
+          onValue: (value) => searchPromoProvider.searchItem(value),
           itemDetailPage: 'promoviewer',
           notFoundText: "Ninguna coincidencia para el texto indicado",
+          notTextInput: "Ingrese un texto a buscar",
           prompt: "Búsqueda en multidescuentos",
-          idFetch: 'id',
-          titleFetch: 'nombre',
-          SID: 'TypeAheadFieldTitlePrincipalScreen',
+          fieldSID: 'TypeAheadFieldTitlePrincipalScreen',
+          externalDataIsFiltered: true,
         ),
         leading: GestureDetector(
           onTap: () {

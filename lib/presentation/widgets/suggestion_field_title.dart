@@ -11,20 +11,21 @@ class SuggestionFieldTitle extends StatelessWidget {
   final ValueChanged<ItemSuggestion> onValue;
   final String prompt;
   final String notFoundText;
+  final String notTextInput;
+  late String emptyText;
   final String itemDetailPage;
-  final String SID;
-  final String idFetch;
-  final String titleFetch;
+  final String fieldSID;
+  final bool externalDataIsFiltered;
 
-  const SuggestionFieldTitle({
+  SuggestionFieldTitle({
     Key? key,
     required this.onValue,
     required this.prompt,
     required this.notFoundText,
+    required this.notTextInput,
     required this.itemDetailPage,
-    required this.idFetch,
-    required this.titleFetch,
-    required this.SID
+    required this.fieldSID,
+    this.externalDataIsFiltered = false
   }) : super(key: key);
 
   @override
@@ -37,10 +38,16 @@ class SuggestionFieldTitle extends StatelessWidget {
       hideOnUnfocus: true,
       controller: typeAheadController,
       suggestionsController: suggestionController,
-      //emptyBuilder: (value) {
-      //  var localizedMessage = notFoundText;
-      //  return Text(localizedMessage);
-      //},
+      emptyBuilder: (value) {
+        return Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            emptyText,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        );
+      },
       builder: (context, controller, focusNode) {
         return TextField(
           controller: controller,
@@ -48,7 +55,8 @@ class SuggestionFieldTitle extends StatelessWidget {
           autofocus: false,
           textInputAction: TextInputAction.search,
           onSubmitted: (value){
-            print(value);
+            ItemSuggestion suggestion = ItemSuggestion(id: -1, title: value);
+            onValue(suggestion);
           },
           decoration: InputDecoration(
             border: OutlineInputBorder(
@@ -82,38 +90,46 @@ class SuggestionFieldTitle extends StatelessWidget {
         return const Divider(height: 1);
       },
       suggestionsCallback: (pattern) async{
-        List<List<ItemSuggestion>> matches = await fetchData(pattern);
+        Map<String,List<ItemSuggestion>> matches = await fetchData(pattern);
+        List<ItemSuggestion> hList = matches['history'] ?? [];
+        List<ItemSuggestion> eList = matches['external'] ?? [];
 
-        int hsMax = matches.last.isEmpty ? 5 : 2;
-        hsMax = matches.first.isEmpty
-            ? 0
-            : matches.first.length < hsMax
-              ? matches.first.length : hsMax;
-
-        matches.first.retainWhere((s) {
-          return s.title.toLowerCase().contains(pattern.toLowerCase());
-        });
-
-        List<ItemSuggestion> x1 = [];
-        if (hsMax > 0 && hsMax <= matches.first.length) {
-          x1 = List.from(matches.first.getRange(0, hsMax));
+        if (pattern.isEmpty && hList.isEmpty){
+          emptyText = notTextInput;
+          return [];
         }
-        if (x1.isEmpty) {
-          return matches.last;
-        } else {
-          return x1..addAll(matches.last);
+        else {
+          emptyText = notFoundText;
+          Set<ItemSuggestion> returnSet = {};
+
+          int hsMax = eList.isEmpty ? 5 : 2;
+
+          //filtering external data
+          if (!externalDataIsFiltered) {
+            eList.retainWhere((e) =>
+                e.title.toLowerCase().contains(pattern.toLowerCase())
+            );
+          }
+
+          //filtering history data
+          int cToMax = 0;
+          hList.retainWhere(
+                  (e) => cToMax++ < hsMax
+                      && e.title.toLowerCase().contains(pattern.toLowerCase())
+          );
+
+          returnSet = {...eList.reversed, ...hList.reversed};
+          return returnSet.toList().reversed.toList();
         }
       },
       itemBuilder: (context, promo) {
         return Card(
           elevation: 0,
           color: Colors.white,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-          ),
           child: Column(
             children: <Widget>[
               ListTile(
+                contentPadding: const EdgeInsets.fromLTRB(5, 1, 5, 0),
                 title: Text(promo.title),
                 leading: promo.type == ItemSuggestion.SUGGESTION_TYPE
                     ? const Icon(Icons.search):const Icon(Icons.history),
@@ -127,45 +143,53 @@ class SuggestionFieldTitle extends StatelessWidget {
         typeAheadController.text = suggestion.title;
         suggestionController.close();
         onValue(suggestion);
-        Navigator.pushNamed(context, itemDetailPage);
       },
     );
   }
 
-  Future<void> saveSuggestion(suggestion) async {
+  Future<void> saveSuggestion(ItemSuggestion suggestion) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String suggestionString = suggestion.title;
 
-    List<String> list = prefs.getStringList("historySearch") ?? [];
-    list.remove(suggestionString);
-    List<String> newList = List.from([suggestionString])..addAll(list);
+    final String hSSS = prefs.getString('historySearch') ?? "";
+    List<ItemSuggestion> listItems = hSSS.isNotEmpty
+        ? ItemSuggestion.decode(hSSS, ItemSuggestion.HISTORY_TYPE)
+        : [];
+    listItems.remove(suggestion);
+
+    List<ItemSuggestion> newList = List.from([suggestion])..addAll(listItems);
     if(newList.length > 100) newList.removeLast();
-    prefs.setStringList("historySearch", newList);
+
+    prefs.setString("historySearch", ItemSuggestion.encode(newList));
   }
 
-  Future<List<List<ItemSuggestion>>> fetchData(String pattern) async {
+  Future<Map<String, List<ItemSuggestion>>> fetchData(String pattern) async {
+    Map<String, List<ItemSuggestion>> returnMap = {
+      'history': [],
+      'external': []
+    };
+
+    //get suggestions from shared preferences
     final SharedPreferences prefs = await SharedPreferences
         .getInstance();
-    final List<String>? hS = prefs.getStringList('historySearch');
-    final List<ItemSuggestion>? hSSuggP = hS?.map((e) =>
-        ItemSuggestion(id: -1, title: e, type: ItemSuggestion.HISTORY_TYPE)).toList();
-    List<ItemSuggestion> hsSugg = hSSuggP ?? [];
+    final String hSSS = prefs.getString('historySearch') ?? "";
+    final List<ItemSuggestion> hSSL = hSSS.isNotEmpty
+        ? ItemSuggestion.decode(hSSS,ItemSuggestion.HISTORY_TYPE) : [];
+    returnMap['history'] = hSSL;
 
-    List<ItemSuggestion> itemsFinds = [];
+    //get suggestions from web
+    List<ItemSuggestion> wSSL = [];
     if (pattern.isNotEmpty) {
-      final response = await ServicesGetData().getData(identifier: SID, data: pattern);
+      final response = await ServicesGetData().getData(identifier: fieldSID, data: pattern);
       if (response?.statusCode == 200) {
         var rs = jsonDecode(response!.body);
-        List<dynamic> data = rs['data'] as List<dynamic>;
-        itemsFinds = data.map(
-                (e) => ItemSuggestion(id: e[idFetch], title: e[titleFetch], type: ItemSuggestion.SUGGESTION_TYPE)
-        ).toList();
+        List<dynamic> data = ItemSuggestion.getListFromResponse(rs);
+        wSSL = data.map((e) => ItemSuggestion.fromJson(
+            e,ItemSuggestion.SUGGESTION_TYPE
+        )).toList();
       }
     }
-    List<List<ItemSuggestion>> returnList = [];
-    returnList.add(hsSugg);
-    returnList.add(itemsFinds);
+    returnMap['external'] = wSSL;
 
-    return returnList;
+    return returnMap;
   }
 }

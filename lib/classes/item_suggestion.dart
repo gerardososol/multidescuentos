@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -17,10 +20,12 @@ class ItemSuggestion {
     this.type
   });
 
-  factory ItemSuggestion.fromJson(Map<String, dynamic> json) {
+  factory ItemSuggestion.fromJson(Map<String, dynamic> json, String type) {
     return ItemSuggestion(
-      id: json['id'] as int,
-      title: json['nombre'] as String,
+      id: json['id'] ?? -1,
+      title: json['nombre'] ?? "",
+      image: json['logo'] ?? "",
+      type: type,
     );
   }
 
@@ -29,7 +34,27 @@ class ItemSuggestion {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is ItemSuggestion && other.id == id && other.title == title;
+    return other is ItemSuggestion && other.title == title;
+  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'nombre': title,
+    'logo': image,
+  };
+
+  static String encode(List<ItemSuggestion> items) => json.encode(
+    items.map<Map<String, dynamic>>((item) => item.toJson()).toList(),
+  );
+
+  static List<ItemSuggestion> decode(String items, String type) {
+      return (json.decode(items) as List<dynamic>)
+          .map<ItemSuggestion>((item) => ItemSuggestion.fromJson(item,type))
+          .toList();
+
+  }
+
+  static List<dynamic> getListFromResponse(dynamic responseBody){
+    return responseBody['data'] as List<dynamic>; //supposing response has data member
   }
 
   @override
