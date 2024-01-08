@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:multidescuentos/presentation/search_promos_provider.dart';
+import 'package:multidescuentos/presentation/item_suggestion_map.dart';
 import 'package:multidescuentos/presentation/widgets/lateral_menu.dart';
 import 'package:multidescuentos/presentation/widgets/suggestion_field_title.dart';
 import 'package:provider/provider.dart';
@@ -9,13 +7,14 @@ import 'package:provider/provider.dart';
 import '../presentation/widgets/panel_promos.dart';
 
 class HomeScreen extends StatelessWidget{
+  static const String name = 'HomeScreen';
   const HomeScreen({super.key, required this.title});
 
   final String title;
 
   @override
   Widget build(BuildContext context) {
-    final searchPromoProvider = context.read<SearchPromosProvider>();
+    final itemSuggestionMap = context.read<ItemSuggestionMap>();
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -32,7 +31,9 @@ class HomeScreen extends StatelessWidget{
         ),
         toolbarHeight: 60,
         title: SuggestionFieldTitle(
-          onValue: (value) => searchPromoProvider.searchItem(value),
+          onValue: (value) => itemSuggestionMap.addItem(
+              value.id.toString(),value
+          ),
           itemDetailPage: 'promoviewer',
           notFoundText: "Ninguna coincidencia para el texto indicado",
           notTextInput: "Ingrese un texto a buscar",
@@ -49,7 +50,7 @@ class HomeScreen extends StatelessWidget{
         leadingWidth: 30,
       ),
       drawer: const LateralMenu(),
-      body: const PanelPromos(),
+      body: PanelPromos(),
     );
   }
 }

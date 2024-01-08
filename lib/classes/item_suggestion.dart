@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 @immutable
 class ItemSuggestion {
   final int id;
   final String title;
-  String? image;
+  String? imageUrl;
   String? type;
+  Image? image;
 
   static String SUGGESTION_TYPE = "suggestion";
   static String HISTORY_TYPE = "history";
@@ -16,15 +16,16 @@ class ItemSuggestion {
   ItemSuggestion({
     required this.id,
     required this.title,
-    this.image,
-    this.type
+    this.imageUrl,
+    this.type,
+    this.image
   });
 
   factory ItemSuggestion.fromJson(Map<String, dynamic> json, String type) {
     return ItemSuggestion(
       id: json['id'] ?? -1,
       title: json['nombre'] ?? "",
-      image: json['logo'] ?? "",
+      imageUrl: json['logo'] ?? "",
       type: type,
     );
   }
@@ -39,7 +40,7 @@ class ItemSuggestion {
   Map<String, dynamic> toJson() => {
     'id': id,
     'nombre': title,
-    'logo': image,
+    'logo': imageUrl,
   };
 
   static String encode(List<ItemSuggestion> items) => json.encode(

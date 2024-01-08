@@ -1,26 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multidescuentos/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  static const String name = 'SplashScreen';
   const SplashScreen({super.key});
 
   @override
-  _SplashScreen createState() => _SplashScreen();
+  SplashScreenP createState() => SplashScreenP();
 }
 
-class _SplashScreen extends State<SplashScreen> {
+class SplashScreenP extends State<SplashScreen> {
   @override
   void initState(){
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-              const HomeScreen(title: 'Multidescuentos')
-          )
-      );
+      context.goNamed(HomeScreen.name);
     });
   }
 

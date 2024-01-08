@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:multidescuentos/config/app_router.dart';
 import 'package:multidescuentos/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'package:multidescuentos/presentation/search_promos_provider.dart';
+import 'package:multidescuentos/presentation/item_suggestion_map.dart';
 import 'package:multidescuentos/screens/about.dart';
 import 'package:multidescuentos/screens/home_screen.dart';
 import 'package:multidescuentos/screens/view_promo.dart';
@@ -18,26 +19,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => SearchPromosProvider())
+        ChangeNotifierProvider(create: (_) => ItemSuggestionMap())
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: appRouter,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromRGBO(225, 7, 23, 1)
           ),
           useMaterial3: true,
         ),
-        initialRoute: '/splash',
-        routes: <String, WidgetBuilder>{
-          '/': (BuildContext context) => const HomeScreen(title: 'Multidescuentos'),
-          '/splash': (context) => const SplashScreen(),
-          'promoviewer': (BuildContext context) => const ViewPromo(),
-          'about': (BuildContext context) => const AboutPage(),
-        },
-        onGenerateRoute: (RouteSettings settings) {
-          return MaterialPageRoute(
-              builder: (BuildContext builder) => const HomeScreen(title: 'Multidescuentos'));
-        },
       ),
     );
   }

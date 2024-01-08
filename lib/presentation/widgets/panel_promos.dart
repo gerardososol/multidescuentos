@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:multidescuentos/presentation/item_suggestion_map.dart';
+import 'package:multidescuentos/screens/screens.dart';
 import 'package:multidescuentos/services/services_get_data.dart';
 import 'package:provider/provider.dart';
 
 import '../../classes/item_suggestion.dart';
 import '../../widgets/brandcard.dart';
-import '../search_promos_provider.dart';
 
 class PanelPromos extends StatelessWidget {
-  final String defaultImage = "http://multidescuentos.com.mx/logos/afiliaciones/20231220_121209_Danza y Moto _28_ _1_.png";
+  final Image defaultImage = Image.network("http://multidescuentos.com.mx/logos/afiliaciones/20231220_121209_Danza y Moto _28_ _1_.png");
+  final Image loadImage = Image.network("http://multidescuentos.com.mx/logos/afiliaciones/20231220_121209_Danza y Moto _28_ _1_.png");
+  ItemSuggestionMap? itemSuggestionMap;
 
-  const PanelPromos({
+  PanelPromos({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final searchPromoProvider = context.watch<SearchPromosProvider>();
+    itemSuggestionMap = context.watch<ItemSuggestionMap>();
     return FutureBuilder<List<BrandCard>>(
       future: fetchPromoData(),
       builder: (context, snapshot) {
@@ -43,10 +46,25 @@ class PanelPromos extends StatelessWidget {
     final List<ItemSuggestion> fSSL = dataL.map((e) => ItemSuggestion.fromJson(
         e,ItemSuggestion.SUGGESTION_TYPE
     )).toList();
+
+
+    List<BrandCard> returnList = [];
+    for (var element in fSSL) {
+      returnList.add( BrandCard(
+        suggestion: element,
+        defaultImage: defaultImage,
+        loadImage: loadImage,
+        onValue: (value) {
+          itemSuggestionMap?.selectItem(value.id.toString());
+          //TODO send id in parameter on navigation
+          //context.pushNamed();
+        },
+      ));
+      if (itemSuggestionMap != null) {
+        itemSuggestionMap?.addItem(element.id.toString(), element);
+      }
+    }
     
-    return fSSL.map((element) => BrandCard(
-      suggestion: element,
-      defaultImage: defaultImage)
-    ).toList();
+    return returnList;
   }
 }
