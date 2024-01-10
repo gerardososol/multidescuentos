@@ -2,14 +2,6 @@
   "status":200,
   "message":"OK",
   "data":[
-    {"id":124,"nombre":"AGRUPACION MELAO","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/AGRUPACION MELAO_124346.jpeg"},
-    {"id":9,"nombre":"ARTEMANIA PLAZA ANIMAS","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/20230616_130631_WhatsApp Image 2023-06-15 at 20.39.23.jpeg"},
-    {"id":3,"nombre":"AUTO CLEAN LAVADO DE AUTOS","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/autoclean.jpg"},
-    {"id":135,"nombre":"BALANCE NUTRICION Y ESTETICA","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/BALANCE NUTRICION Y ESTETICA_193019.jpg"},
-    {"id":118,"nombre":"CELULARES EN ABONOS KREDIEXPRESS","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/CELULARES EN ABONOS KREDIEXPRESS_134058.jpeg"},
-    {"id":37,"nombre":"CHOPO LABORATORIOS","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/chopo.jpg"},
-    {"id":97,"nombre":"DR. JOSE ANTONIO MARABATO MILLAN","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/20231220_181246_Danza y Moto _34_.png"},
-    {"id":12,"nombre":"HEALTHY & FRESH SALADS BAR XALAPA","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/20230613_160635_WhatsApp Image 2023-05-29 at 13.21.55 _4_.jpeg"},
-    {"id":96,"nombre":"KARLA AYORA BARBER SHOP STUDIO","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/20231220_121224_Danza y Moto _31_ _1_.png"}
+    {"id":3,"nombre":"AUTO CLEAN LAVADO DE AUTOS","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/autoclean.jpg"}
   ]
 }
