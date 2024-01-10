@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multidescuentos/presentation/item_suggestion_map.dart';
 import 'package:multidescuentos/screens/screens.dart';
 import 'package:multidescuentos/services/services_get_data.dart';
@@ -20,7 +21,7 @@ class PanelPromos extends StatelessWidget {
   Widget build(BuildContext context) {
     itemSuggestionMap = context.watch<ItemSuggestionMap>();
     return FutureBuilder<List<BrandCard>>(
-      future: fetchPromoData(),
+      future: fetchPromoData(context),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return GridView.builder(
@@ -39,7 +40,7 @@ class PanelPromos extends StatelessWidget {
     );
   }
 
-  Future<List<BrandCard>> fetchPromoData() async {
+  Future<List<BrandCard>> fetchPromoData(BuildContext context) async {
     var jsonData = await ServicesGetData()
         .getDataFromFile(identifier: "GridViewPrincipalScreen") ?? "";
     final List<dynamic> dataL = jsonData["data"];
@@ -55,9 +56,7 @@ class PanelPromos extends StatelessWidget {
         defaultImage: defaultImage,
         loadImage: loadImage,
         onValue: (value) {
-          itemSuggestionMap?.selectItem(value.id.toString());
-          //TODO send id in parameter on navigation
-          //context.pushNamed();
+          context.pushNamed(ViewPromo.name, pathParameters: {'fetchPromoData': value});
         },
       ));
       if (itemSuggestionMap != null) {

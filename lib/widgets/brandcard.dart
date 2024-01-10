@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multidescuentos/classes/item_suggestion.dart';
 
 class BrandCard extends StatefulWidget {
-  final ValueChanged<ItemSuggestion> onValue;
+  final ValueChanged<String> onValue;
   final ItemSuggestion suggestion;
   final Image defaultImage;
   final Image loadImage;
@@ -48,7 +48,7 @@ class BrandCardP extends State<BrandCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          widget.onValue(widget.suggestion);
+          widget.onValue(widget.suggestion.id);
         },
         child: Container(
           padding: const EdgeInsets.all(5),

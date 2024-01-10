@@ -16,7 +16,7 @@ final appRouter = GoRouter(
           builder: (context,state) => const SplashScreen()
       ),
       GoRoute(
-          path: '/promoviewer/:itemSuggestionId',
+          path: '/promoviewer/:v',
           name: ViewPromo.name,
           builder: (context,state) => ViewPromo(
               itemSuggestionID: state.pathParameters['itemSuggestionId'] ?? ""
