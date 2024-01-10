@@ -9,23 +9,18 @@ import '../../classes/item_suggestion.dart';
 import '../../widgets/brandcard.dart';
 
 class PanelPromos extends StatelessWidget {
-  final Image defaultImage = Image.network(
-    "http://multidescuentos.com.mx/logos/afiliaciones/20230616_130631_WhatsApp%20Image%202023-06-15%20at%2020.39.23.jpeg",
-    width: 135
-  );
-  final Image loadImage = Image.network(
-    "http://multidescuentos.com.mx/logos/afiliaciones/20231220_121209_Danza y Moto _28_ _1_.png",
-    width: 135
-  );
+  static String defaultImageUrl = "http://multidescuentos.com.mx/logos/afiliaciones/20230616_130631_WhatsApp%20Image%202023-06-15%20at%2020.39.23.jpeg";
+  static String loadImageUrl = "http://multidescuentos.com.mx/logos/afiliaciones/20230616_130631_WhatsApp%20Image%202023-06-15%20at%2020.39.23.jpeg";
+  final Image defaultImage = Image.network(defaultImageUrl, width: 135);
+  final Image loadImage = Image.network(loadImageUrl, width: 135);
   ItemSuggestionMap? itemSuggestionMap;
 
-  PanelPromos({
-    super.key,
-  });
+  PanelPromos({super.key,});
 
   @override
   Widget build(BuildContext context) {
     itemSuggestionMap = context.watch<ItemSuggestionMap>();
+    itemSuggestionMap?.addDefaultImage(defaultImage);
     return FutureBuilder<List<BrandCard>>(
       future: fetchPromoData(context),
       builder: (context, snapshot) {
