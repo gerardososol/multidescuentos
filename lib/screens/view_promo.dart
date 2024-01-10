@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multidescuentos/classes/item_suggestion.dart';
+import 'package:multidescuentos/presentation/item_suggestion_map.dart';
+import 'package:provider/provider.dart';
 
 class ViewPromo extends StatelessWidget {
   static const String name = 'ViewPromo';
@@ -8,10 +10,15 @@ class ViewPromo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ItemSuggestionMap itemSuggestionMap = context.watch<ItemSuggestionMap>();
+    _CustomSliverAppBar customSliverAppBar = _CustomSliverAppBar(
+        itemSuggestion: itemSuggestionMap.mapIS[itemSuggestionID.toString()] 
+          ?? ItemSuggestion(id: -1, title: "Error")
+    );
     return Scaffold(
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
-        slivers: [_CustomSliverAppBar(itemSuggestion: itemSuggestionID)],
+        slivers: [customSliverAppBar],
       ),
     );
   }
@@ -19,7 +26,8 @@ class ViewPromo extends StatelessWidget {
 
 class _CustomSliverAppBar extends StatelessWidget {
   final ItemSuggestion itemSuggestion;
-  const _CustomSliverAppBar({Key? key, required this.itemSuggestion}) : super(key: key);
+  const _CustomSliverAppBar({Key? key, required this.itemSuggestion})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-@immutable
 class ItemSuggestion {
   final int id;
   final String title;
@@ -10,8 +9,8 @@ class ItemSuggestion {
   String? type;
   Image? image;
 
-  static String SUGGESTION_TYPE = "suggestion";
-  static String HISTORY_TYPE = "history";
+  static String suggestionType = "suggestion";
+  static String historyType = "history";
 
   ItemSuggestion({
     required this.id,

@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:multidescuentos/classes/item_suggestion.dart';
 import 'package:multidescuentos/screens/screens.dart';
 
 final appRouter = GoRouter(
@@ -16,7 +15,7 @@ final appRouter = GoRouter(
           builder: (context,state) => const SplashScreen()
       ),
       GoRoute(
-          path: '/promoviewer/:v',
+          path: '/promoviewer/:itemSuggestionId',
           name: ViewPromo.name,
           builder: (context,state) => ViewPromo(
               itemSuggestionID: state.pathParameters['itemSuggestionId'] ?? ""

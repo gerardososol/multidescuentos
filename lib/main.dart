@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multidescuentos/config/app_router.dart';
-import 'package:multidescuentos/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:multidescuentos/presentation/item_suggestion_map.dart';
-import 'package:multidescuentos/screens/about.dart';
-import 'package:multidescuentos/screens/home_screen.dart';
-import 'package:multidescuentos/screens/view_promo.dart';
-
 void main() {
   runApp(const MyApp());
 }

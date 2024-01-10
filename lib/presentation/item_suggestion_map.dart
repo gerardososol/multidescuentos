@@ -6,9 +6,7 @@ class ItemSuggestionMap extends ChangeNotifier{
   Map<String,ItemSuggestion> mapIS = {};
 
   Future<void> addItem(String idIS, ItemSuggestion itemSuggestion) async{
-    if (idIS != null && ItemSuggestion != null) {
-      mapIS[idIS] = itemSuggestion;
-      notifyListeners();
-    }
+    mapIS[idIS] = itemSuggestion;
+    notifyListeners();
   }
 }

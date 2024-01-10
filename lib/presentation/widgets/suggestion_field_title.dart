@@ -131,7 +131,7 @@ class SuggestionFieldTitle extends StatelessWidget {
               ListTile(
                 contentPadding: const EdgeInsets.fromLTRB(5, 1, 5, 0),
                 title: Text(promo.title),
-                leading: promo.type == ItemSuggestion.SUGGESTION_TYPE
+                leading: promo.type == ItemSuggestion.suggestionType
                     ? const Icon(Icons.search):const Icon(Icons.history),
               ),
             ],
@@ -152,7 +152,7 @@ class SuggestionFieldTitle extends StatelessWidget {
 
     final String hSSS = prefs.getString('historySearch') ?? "";
     List<ItemSuggestion> listItems = hSSS.isNotEmpty
-        ? ItemSuggestion.decode(hSSS, ItemSuggestion.HISTORY_TYPE)
+        ? ItemSuggestion.decode(hSSS, ItemSuggestion.historyType)
         : [];
     listItems.remove(suggestion);
 
@@ -173,7 +173,7 @@ class SuggestionFieldTitle extends StatelessWidget {
         .getInstance();
     final String hSSS = prefs.getString('historySearch') ?? "";
     final List<ItemSuggestion> hSSL = hSSS.isNotEmpty
-        ? ItemSuggestion.decode(hSSS,ItemSuggestion.HISTORY_TYPE) : [];
+        ? ItemSuggestion.decode(hSSS,ItemSuggestion.historyType) : [];
     returnMap['history'] = hSSL;
 
     //get suggestions from web
@@ -184,7 +184,7 @@ class SuggestionFieldTitle extends StatelessWidget {
         var rs = jsonDecode(response!.body);
         List<dynamic> data = ItemSuggestion.getListFromResponse(rs);
         wSSL = data.map((e) => ItemSuggestion.fromJson(
-            e,ItemSuggestion.SUGGESTION_TYPE
+            e,ItemSuggestion.suggestionType
         )).toList();
       }
     }

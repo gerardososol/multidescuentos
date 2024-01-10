@@ -23,10 +23,7 @@ class BrandCardP extends State<BrandCard> {
   @override
   void initState() {
     super.initState();
-    if (widget.suggestion != null
-        && widget.suggestion.imageUrl != null
-        && widget.suggestion.image == null){
-
+    if (widget.suggestion.imageUrl != null && widget.suggestion.image == null){
       widget.suggestion.image = Image.network(
         widget.suggestion.imageUrl!,
         width: 135,
@@ -48,7 +45,7 @@ class BrandCardP extends State<BrandCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          widget.onValue(widget.suggestion.id);
+          widget.onValue(widget.suggestion.id.toString());
         },
         child: Container(
           padding: const EdgeInsets.all(5),

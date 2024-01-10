@@ -45,7 +45,7 @@ class PanelPromos extends StatelessWidget {
         .getDataFromFile(identifier: "GridViewPrincipalScreen") ?? "";
     final List<dynamic> dataL = jsonData["data"];
     final List<ItemSuggestion> fSSL = dataL.map((e) => ItemSuggestion.fromJson(
-        e,ItemSuggestion.SUGGESTION_TYPE
+        e,ItemSuggestion.suggestionType
     )).toList();
 
 
@@ -56,7 +56,7 @@ class PanelPromos extends StatelessWidget {
         defaultImage: defaultImage,
         loadImage: loadImage,
         onValue: (value) {
-          context.pushNamed(ViewPromo.name, pathParameters: {'fetchPromoData': value});
+          context.pushNamed(ViewPromo.name, pathParameters: {'itemSuggestionId': value});
         },
       ));
       if (itemSuggestionMap != null) {
