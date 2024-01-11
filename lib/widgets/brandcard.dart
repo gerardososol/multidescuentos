@@ -17,7 +17,20 @@ class BrandCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    Image imagen = Image.network(
+      suggestion.imageUrl!,
+      width: 135,
+      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Center(
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                : null,
+          ),
+        );
+      },
+    );
     return GestureDetector(
         onTap: () {
           onValue(suggestion.id.toString());
@@ -28,20 +41,7 @@ class BrandCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.network(
-                suggestion.imageUrl!,
-                width: 135,
-                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                },
-              ),
+              imagen,
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

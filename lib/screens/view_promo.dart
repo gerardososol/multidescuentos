@@ -36,6 +36,22 @@ class _CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    
+  Image imagen = Image.network(
+      itemSuggestion.imageUrl!,
+      fit: BoxFit.cover,
+      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Center(
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                : null,
+          ),
+        );
+      },
+    );
+    
     return SliverAppBar(
       foregroundColor: Colors.white,
       backgroundColor: Colors.red,
@@ -50,7 +66,7 @@ class _CustomSliverAppBar extends StatelessWidget {
         background: Stack(
           children: [
             SizedBox.expand(
-              child: Image(image: itemSuggestion.image?.image ?? defaultImage.image, fit: BoxFit.cover,),
+              child: imagen,
             ),
           ],
         ),
