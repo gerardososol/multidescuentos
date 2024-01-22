@@ -12,19 +12,54 @@ class ViewPromo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ItemSuggestionMap itemSuggestionMap = context.watch<ItemSuggestionMap>();
+    ItemSuggestion itemSuggestion =
+        itemSuggestionMap.mapIS[itemSuggestionID.toString()]
+        ?? ItemSuggestion(id: -1, title: "Error");
     _CustomSliverAppBar customSliverAppBar = _CustomSliverAppBar(
-      itemSuggestion: itemSuggestionMap.mapIS[itemSuggestionID.toString()] ?? ItemSuggestion(id: -1, title: "Error"),
+      itemSuggestion: itemSuggestion,
       defaultImage: itemSuggestionMap.defaultImage ??
           Image.network(PanelPromos.defaultImageUrl),
     );
     return Scaffold(
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
-        slivers: [customSliverAppBar],
+        slivers: [
+          customSliverAppBar,
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => _PromoDetails(itemSuggestion: itemSuggestion),
+              childCount: 1
+            )
+          ),
+        ],
       ),
     );
   }
 }
+
+class _PromoDetails extends StatelessWidget {
+  final ItemSuggestion itemSuggestion;
+  const _PromoDetails({Key? key, required this.itemSuggestion}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
 
 class _CustomSliverAppBar extends StatelessWidget {
   ItemSuggestion itemSuggestion;
@@ -37,7 +72,7 @@ class _CustomSliverAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     
-  Image imagen = Image.network(
+  Image image = Image.network(
       itemSuggestion.imageUrl!,
       fit: BoxFit.cover,
       loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
@@ -66,7 +101,30 @@ class _CustomSliverAppBar extends StatelessWidget {
         background: Stack(
           children: [
             SizedBox.expand(
-              child: imagen,
+              child: image,
+            ),
+            const SizedBox.expand(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.7,1.0],
+                    colors: [Colors.transparent,Colors.black87],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox.expand(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    stops: [0.0,0.3],
+                    colors: [Colors.black87,Colors.transparent],
+                  ),
+                ),
+              ),
             ),
           ],
         ),

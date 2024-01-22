@@ -60,7 +60,7 @@ class SuggestionFieldTitle extends StatelessWidget {
           },
           decoration: InputDecoration(
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20),
               borderSide: const BorderSide(
                 width: 0,
                 style: BorderStyle.none,

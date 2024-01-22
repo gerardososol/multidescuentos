@@ -23,8 +23,8 @@ class HomeScreen extends StatelessWidget{
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.red, Colors.black38],
-              begin: Alignment.topLeft,
+              colors: [Colors.red,Colors.white],
+              begin: Alignment.topCenter,
               end: Alignment.bottomRight,
             ),
           ),

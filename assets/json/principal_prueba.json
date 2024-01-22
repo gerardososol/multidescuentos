@@ -2,6 +2,20 @@
   "status":200,
   "message":"OK",
   "data":[
-    {"id":3,"nombre":"AUTO CLEAN LAVADO DE AUTOS","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/autoclean.jpg"}
+    {"id":124,"nombre":"AGRUPACION MELAO","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/AGRUPACION MELAO_124346.jpeg","ubicaciones": [
+      "Av. Murillo Vidal #604 Fraccionamiento ensueño (No aplica la promoción de líquidos)\t",
+      "Tapachula #67 Esquina Pablo Frutis, Colonia Badillo, Xalapa, Ver.\t",
+      "Miguel Hidalgo #42 Colonia centro ",
+      "Matamoros esquina hortencia #69 Colonia salud Coapexpan ",
+      "Av. Valle Real #60 Local 9 Plaza Valle, Fraccionamiento Valle Real ",
+      "Rafael Murillo Vidal #15 Colonia El Lencero\t",
+      "Adalberto Tejeda #60-A Colonia Modelo",
+      "Loma Bonita #29-B Colonia Lomas Verdes ",
+      "Ferrocarril Interoceánico  #35 Esq. Norte 9 Colonia Ferrocarrilera ",
+      "Agustín Lara #57 Colonia Badillo",
+      "Nogueira #9 Colonia Centro",
+      "20 de noviembre oriente #510 Colonia Tatahuicapa"
+    ]
+    }
   ]
 }

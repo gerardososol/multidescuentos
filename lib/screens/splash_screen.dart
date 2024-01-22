@@ -35,7 +35,7 @@ class SplashScreenP extends State<SplashScreen> {
             border: Border.all(
               width: 8,
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(0),
           ),
         ),
       ),

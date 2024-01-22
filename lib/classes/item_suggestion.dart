@@ -2,12 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import 'discounted.dart';
+
 class ItemSuggestion {
   final int id;
   final String title;
   String? imageUrl;
   String? type;
-  Image? image;
+  Image? logo;
+  String? giro;
+  String? web;
+  String? description;
+  List<String>? locations;
+  List<String>? phones;
+  List<String>? emails;
+  List<Discounted>? discounted;
+
 
   static String suggestionType = "suggestion";
   static String historyType = "history";
@@ -17,15 +27,32 @@ class ItemSuggestion {
     required this.title,
     this.imageUrl,
     this.type,
-    this.image
+    this.logo,
+    this.giro,
+    this.web,
+    this.description,
+    this.locations,
+    this.phones,
+    this.emails,
+    this.discounted
   });
 
-  factory ItemSuggestion.fromJson(Map<String, dynamic> json, String type) {
+  factory ItemSuggestion.fromJson(Map<String, dynamic> jsonData, String type) {
+    var variable = jsonData['ubicaciones'] ?? "['uni','ds']";
+    var variable2 = json.decode(variable);
+
     return ItemSuggestion(
-      id: json['id'] ?? -1,
-      title: json['nombre'] ?? "",
-      imageUrl: json['logo'] ?? "",
+      id: jsonData['id'] ?? -1,
+      title: jsonData['nombre'] ?? "",
+      imageUrl: jsonData['logo'] ?? "",
       type: type,
+      giro: jsonData['giro'] ?? "",
+      web: jsonData['web'] ?? "",
+      description: jsonData['descripcion'] ?? "",
+      locations: variable2 as List<String>,
+      //phones: json.decode(jsonData['telefonos'] ?? []) as List<String>,
+      //emails: json.decode(jsonData['correos'] ?? []) as List<String>,
+      //discounted: Discounted.decode(jsonData['descuentos'] ?? ""),
     );
   }
 
