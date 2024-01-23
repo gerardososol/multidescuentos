@@ -13,7 +13,7 @@ class ItemSuggestion {
   String? giro;
   String? web;
   String? description;
-  List<String>? locations;
+  List<dynamic>? locations;
   List<String>? phones;
   List<String>? emails;
   List<Discounted>? discounted;
@@ -38,8 +38,11 @@ class ItemSuggestion {
   });
 
   factory ItemSuggestion.fromJson(Map<String, dynamic> jsonData, String type) {
-    var variable = jsonData['ubicaciones'] ?? "['uni','ds']";
-    var variable2 = json.decode(variable);
+    final Map<String,dynamic> descuentos = jsonData['descuentos'] ?? {};
+    print(descuentos);
+    List<Discounted> variable = descuentos.isNotEmpty
+        ? Discounted.decode(descuentos) : [];
+    print(variable.length);
 
     return ItemSuggestion(
       id: jsonData['id'] ?? -1,
@@ -49,9 +52,9 @@ class ItemSuggestion {
       giro: jsonData['giro'] ?? "",
       web: jsonData['web'] ?? "",
       description: jsonData['descripcion'] ?? "",
-      locations: variable2 as List<String>,
-      //phones: json.decode(jsonData['telefonos'] ?? []) as List<String>,
-      //emails: json.decode(jsonData['correos'] ?? []) as List<String>,
+      locations: jsonData['ubicaciones'] ?? [],
+      phones: jsonData['telefonos'] ?? [],
+      emails: jsonData['correos'] ?? [],
       //discounted: Discounted.decode(jsonData['descuentos'] ?? ""),
     );
   }

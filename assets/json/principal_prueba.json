@@ -3,19 +3,25 @@
   "message":"OK",
   "data":[
     {"id":124,"nombre":"AGRUPACION MELAO","tipo":"N","logo":"http:\/\/multidescuentos.com.mx\/logos\/afiliaciones\/AGRUPACION MELAO_124346.jpeg","ubicaciones": [
-      "Av. Murillo Vidal #604 Fraccionamiento ensueño (No aplica la promoción de líquidos)\t",
-      "Tapachula #67 Esquina Pablo Frutis, Colonia Badillo, Xalapa, Ver.\t",
-      "Miguel Hidalgo #42 Colonia centro ",
-      "Matamoros esquina hortencia #69 Colonia salud Coapexpan ",
-      "Av. Valle Real #60 Local 9 Plaza Valle, Fraccionamiento Valle Real ",
-      "Rafael Murillo Vidal #15 Colonia El Lencero\t",
-      "Adalberto Tejeda #60-A Colonia Modelo",
-      "Loma Bonita #29-B Colonia Lomas Verdes ",
-      "Ferrocarril Interoceánico  #35 Esq. Norte 9 Colonia Ferrocarrilera ",
-      "Agustín Lara #57 Colonia Badillo",
-      "Nogueira #9 Colonia Centro",
-      "20 de noviembre oriente #510 Colonia Tatahuicapa"
-    ]
+        "Av. Murillo Vidal #604 Fraccionamiento ensueño (No aplica la promoción de líquidos)\t",
+        "Tapachula #67 Esquina Pablo Frutis, Colonia Badillo, Xalapa, Ver.\t",
+        "Miguel Hidalgo #42 Colonia centro ",
+        "Matamoros esquina hortencia #69 Colonia salud Coapexpan ",
+        "Av. Valle Real #60 Local 9 Plaza Valle, Fraccionamiento Valle Real ",
+        "Rafael Murillo Vidal #15 Colonia El Lencero\t",
+        "Adalberto Tejeda #60-A Colonia Modelo",
+        "Loma Bonita #29-B Colonia Lomas Verdes ",
+        "Ferrocarril Interoceánico  #35 Esq. Norte 9 Colonia Ferrocarrilera ",
+        "Agustín Lara #57 Colonia Badillo",
+        "Nogueira #9 Colonia Centro",
+        "20 de noviembre oriente #510 Colonia Tatahuicapa"
+      ],
+      "descuentos":[
+        {"descuento":null,"imagen":"http:\/\/multidescuentos.com.mx\/logos\/descuentos\/2_20230823_221135_IMG_5649.jpeg"},
+        {"descuento":"20% de descuento en compra final (acumulable con otras promociones vigentes en tienda).","imagen":null},
+        {"descuento":"En todos los l\u00edquidos estamos al 2 + 1 (ll\u00e9vate dos y te obsequiamos uno).","imagen":null},
+        {"descuento":"Todas las tiendas a precio de promoci\u00f3n (desde un producto ahorras hasta un 30%).","imagen":null}
+      ]
     }
   ]
 }
