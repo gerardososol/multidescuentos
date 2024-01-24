@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-
 class Discounted {
   final String text;
   final String imageUrl;
@@ -15,7 +11,7 @@ class Discounted {
     );
   }
 
-  static List<Discounted> decode(Map<String, dynamic> items) {
+  static List<Discounted> decode(List<dynamic> items) {
     return items.map<Discounted>((item) => Discounted.fromJson(item)).toList();
   }
 }
