@@ -14,8 +14,8 @@ class ItemSuggestion {
   String? web;
   String? description;
   List<dynamic>? locations;
-  List<String>? phones;
-  List<String>? emails;
+  List<dynamic>? phones;
+  List<dynamic>? emails;
   List<Discounted>? discounted;
 
 
