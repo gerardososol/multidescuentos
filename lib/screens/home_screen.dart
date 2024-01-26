@@ -23,9 +23,9 @@ class HomeScreen extends StatelessWidget{
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.red,Colors.white],
+              colors: [Colors.red,Color.fromARGB(255, 188, 0, 0)],
               begin: Alignment.topCenter,
-              end: Alignment.bottomRight,
+              end: Alignment.bottomCenter,
             ),
           ),
         ),

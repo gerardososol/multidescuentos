@@ -17,20 +17,20 @@ class SuggestionFieldTitle extends StatelessWidget {
   final String fieldSID;
   final bool externalDataIsFiltered;
 
-  SuggestionFieldTitle({
-    Key? key,
-    required this.onValue,
-    required this.prompt,
-    required this.notFoundText,
-    required this.notTextInput,
-    required this.itemDetailPage,
-    required this.fieldSID,
-    this.externalDataIsFiltered = false
-  }) : super(key: key);
+  SuggestionFieldTitle(
+      {Key? key,
+      required this.onValue,
+      required this.prompt,
+      required this.notFoundText,
+      required this.notTextInput,
+      required this.itemDetailPage,
+      required this.fieldSID,
+      this.externalDataIsFiltered = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController typeAheadController = TextEditingController();
+    TextEditingController typeAheadController = TextEditingController();
     final SuggestionsController suggestionController = SuggestionsController();
 
     return TypeAheadField(
@@ -54,7 +54,7 @@ class SuggestionFieldTitle extends StatelessWidget {
           focusNode: focusNode,
           autofocus: false,
           textInputAction: TextInputAction.search,
-          onSubmitted: (value){
+          onSubmitted: (value) {
             ItemSuggestion suggestion = ItemSuggestion(id: -1, title: value);
             onValue(suggestion);
           },
@@ -66,11 +66,17 @@ class SuggestionFieldTitle extends StatelessWidget {
                 style: BorderStyle.none,
               ),
             ),
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.clear),
+              color: Colors.white,
+              onPressed: () {
+                typeAheadController.clear();
+              },
+            ),
             hintText: prompt,
             hintStyle: const TextStyle(color: Colors.black38),
-            contentPadding: const EdgeInsets.symmetric(
-                vertical: 0, horizontal: 13
-            ),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 13),
             filled: true,
             fillColor: Colors.white,
           ),
@@ -86,19 +92,18 @@ class SuggestionFieldTitle extends StatelessWidget {
           child: child,
         );
       },
-      itemSeparatorBuilder: (context,size) {
+      itemSeparatorBuilder: (context, size) {
         return const Divider(height: 1);
       },
-      suggestionsCallback: (pattern) async{
-        Map<String,List<ItemSuggestion>> matches = await fetchData(pattern);
+      suggestionsCallback: (pattern) async {
+        Map<String, List<ItemSuggestion>> matches = await fetchData(pattern);
         List<ItemSuggestion> hList = matches['history'] ?? [];
         List<ItemSuggestion> eList = matches['external'] ?? [];
 
-        if (pattern.isEmpty && hList.isEmpty){
+        if (pattern.isEmpty && hList.isEmpty) {
           emptyText = notTextInput;
           return [];
-        }
-        else {
+        } else {
           emptyText = notFoundText;
           Set<ItemSuggestion> returnSet = {};
 
@@ -106,17 +111,15 @@ class SuggestionFieldTitle extends StatelessWidget {
 
           //filtering external data
           if (!externalDataIsFiltered) {
-            eList.retainWhere((e) =>
-                e.title.toLowerCase().contains(pattern.toLowerCase())
-            );
+            eList.retainWhere(
+                (e) => e.title.toLowerCase().contains(pattern.toLowerCase()));
           }
 
           //filtering history data
           int cToMax = 0;
-          hList.retainWhere(
-                  (e) => cToMax++ < hsMax
-                      && e.title.toLowerCase().contains(pattern.toLowerCase())
-          );
+          hList.retainWhere((e) =>
+              cToMax++ < hsMax &&
+              e.title.toLowerCase().contains(pattern.toLowerCase()));
 
           returnSet = {...eList.reversed, ...hList.reversed};
           return returnSet.toList().reversed.toList();
@@ -132,7 +135,8 @@ class SuggestionFieldTitle extends StatelessWidget {
                 contentPadding: const EdgeInsets.fromLTRB(5, 1, 5, 0),
                 title: Text(promo.title),
                 leading: promo.type == ItemSuggestion.suggestionType
-                    ? const Icon(Icons.search):const Icon(Icons.history),
+                    ? const Icon(Icons.search)
+                    : const Icon(Icons.history),
               ),
             ],
           ),
@@ -157,7 +161,7 @@ class SuggestionFieldTitle extends StatelessWidget {
     listItems.remove(suggestion);
 
     List<ItemSuggestion> newList = List.from([suggestion])..addAll(listItems);
-    if(newList.length > 100) newList.removeLast();
+    if (newList.length > 100) newList.removeLast();
 
     prefs.setString("historySearch", ItemSuggestion.encode(newList));
   }
@@ -169,23 +173,25 @@ class SuggestionFieldTitle extends StatelessWidget {
     };
 
     //get suggestions from shared preferences
-    final SharedPreferences prefs = await SharedPreferences
-        .getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String hSSS = prefs.getString('historySearch') ?? "";
     final List<ItemSuggestion> hSSL = hSSS.isNotEmpty
-        ? ItemSuggestion.decode(hSSS,ItemSuggestion.historyType) : [];
+        ? ItemSuggestion.decode(hSSS, ItemSuggestion.historyType)
+        : [];
     returnMap['history'] = hSSL;
 
     //get suggestions from web
     List<ItemSuggestion> wSSL = [];
     if (pattern.isNotEmpty) {
-      final response = await ServicesGetData().getData(identifier: fieldSID, data: pattern);
+      final response =
+          await ServicesGetData().getData(identifier: fieldSID, data: pattern);
       if (response?.statusCode == 200) {
         var rs = jsonDecode(response!.body);
         List<dynamic> data = ItemSuggestion.getListFromResponse(rs);
-        wSSL = data.map((e) => ItemSuggestion.fromJson(
-            e,ItemSuggestion.suggestionType
-        )).toList();
+        wSSL = data
+            .map((e) =>
+                ItemSuggestion.fromJson(e, ItemSuggestion.suggestionType))
+            .toList();
       }
     }
     returnMap['external'] = wSSL;
