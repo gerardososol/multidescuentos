@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multidescuentos/presentation/item_suggestion_map.dart';
+import 'package:multidescuentos/presentation/search_provider.dart';
 import 'package:multidescuentos/screens/screens.dart';
 import 'package:multidescuentos/services/services_get_data.dart';
 import 'package:provider/provider.dart';
@@ -42,16 +45,11 @@ class PanelPromos extends StatelessWidget {
   }
 
   Future<List<BrandCard>> fetchPromoData(BuildContext context) async {
-    var jsonData = await ServicesGetData()
-        .getDataFromFile(identifier: "GridViewPrincipalScreen") ?? "";
-    final List<dynamic> dataL = jsonData["data"];
-    final List<ItemSuggestion> fSSL = dataL.map((e) => ItemSuggestion.fromJson(
-        e,ItemSuggestion.suggestionType
-    )).toList();
-
+    final searchProvider = context.read<SearchProvider>();
+    List<ItemSuggestion> wSSL = await searchProvider.getAllItemsFromWeb();
 
     List<BrandCard> returnList = [];
-    for (var element in fSSL) {
+    for (var element in wSSL) {
       returnList.add( BrandCard(
         suggestion: element,
         defaultImage: defaultImage,

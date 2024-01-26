@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multidescuentos/presentation/item_suggestion_map.dart';
+import 'package:multidescuentos/presentation/search_provider.dart';
 import 'package:multidescuentos/presentation/widgets/lateral_menu.dart';
 import 'package:multidescuentos/presentation/widgets/suggestion_field_title.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class HomeScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     final itemSuggestionMap = context.read<ItemSuggestionMap>();
+    final searchProvider = context.read<SearchProvider>();
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -31,9 +33,7 @@ class HomeScreen extends StatelessWidget{
         ),
         toolbarHeight: 60,
         title: SuggestionFieldTitle(
-          onValue: (value) => itemSuggestionMap.addItem(
-              value.id.toString(),value
-          ),
+          onValue: (value) => searchProvider.searchItemsFromWeb(value),
           itemDetailPage: 'promoviewer',
           notFoundText: "Ninguna coincidencia para el texto indicado",
           notTextInput: "Ingrese un texto a buscar",

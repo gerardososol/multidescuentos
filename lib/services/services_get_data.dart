@@ -15,7 +15,18 @@ class ServicesGetData{
           'http://multidescuentos.com.mx/api_multidescuento/index.php/getData/getSuggest?search=$data')
       );
     }
+    else if (identifier == "PanelPromosDataScreen"){
+      return http.get(Uri.parse(
+          'http://multidescuentos.com.mx/api_multidescuento/index.php/getData/getSuggest?search=$data')
+      );
+    }
     return null;
+  }
+
+  Future<Response> getAllData() async{
+    return http.get(Uri.parse(
+      'https://multidescuentos.com.mx/api_multidescuento/index.php/getData/getTodasAfi')
+    );
   }
 
   Future<dynamic> getDataFromFile({required String identifier,String data = ""}) async{
