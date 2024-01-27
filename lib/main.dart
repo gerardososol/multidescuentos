@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multidescuentos/config/app_router.dart';
+import 'package:multidescuentos/presentation/search_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:multidescuentos/presentation/item_suggestion_map.dart';
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ItemSuggestionMap())
+        ChangeNotifierProvider(create: (_) => ItemSuggestionMap()),
+        ChangeNotifierProvider(create: (_) => ItemSuggestionProvider())
       ],
       child: MaterialApp.router(
         routerConfig: appRouter,

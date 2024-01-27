@@ -7,17 +7,27 @@ import 'package:provider/provider.dart';
 
 import '../presentation/widgets/panel_promos.dart';
 
-class HomeScreen extends StatelessWidget{
+class HomeScreen extends StatelessWidget {
   static const String name = 'HomeScreen';
+  static bool inicializado = false;
   const HomeScreen({super.key, required this.title});
 
   final String title;
 
+  Future<void> fetchPromoData(BuildContext context) async {
+    final searchProvider = context.read<ItemSuggestionProvider>();
+    await searchProvider.getAllItemsFromWeb();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final itemSuggestionMap = context.read<ItemSuggestionMap>();
-    final searchProvider = context.read<SearchProvider>();
+    final searchProvider = context.read<ItemSuggestionProvider>();
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    if (!inicializado) {
+      fetchPromoData(context);
+      inicializado = true;
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -25,7 +35,7 @@ class HomeScreen extends StatelessWidget{
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.red,Color.fromARGB(255, 188, 0, 0)],
+              colors: [Colors.red, Color.fromARGB(255, 188, 0, 0)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -45,7 +55,9 @@ class HomeScreen extends StatelessWidget{
           onTap: () {
             scaffoldKey.currentState?.openDrawer();
           },
-          child: const Icon(Icons.menu,),
+          child: const Icon(
+            Icons.menu,
+          ),
         ),
         leadingWidth: 30,
       ),
