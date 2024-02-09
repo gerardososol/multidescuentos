@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchProvider = context.read<ItemSuggestionProvider>();
+    final itemSuggestionMap = context.read<ItemSuggestionMap>();
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     if (!inicializado) {
@@ -62,7 +63,9 @@ class HomeScreen extends StatelessWidget {
         leadingWidth: 30,
       ),
       drawer: const LateralMenu(),
-      body: PanelPromos(),
+      body: PanelPromos(
+        itemSuggestionMap: itemSuggestionMap,
+      ),
     );
   }
 }

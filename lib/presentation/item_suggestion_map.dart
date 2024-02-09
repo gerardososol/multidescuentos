@@ -8,7 +8,6 @@ class ItemSuggestionMap extends ChangeNotifier {
 
   Future<void> addItem(String idIS, ItemSuggestion itemSuggestion) async {
     mapIS[idIS] = itemSuggestion;
-    notifyListeners();
   }
 
   Future<void> addDefaultImage(Image? defultImage) async {

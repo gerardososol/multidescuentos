@@ -18,28 +18,26 @@ class ItemSuggestion {
   List<dynamic>? emails;
   List<Discounted>? discounted;
 
-
   static String suggestionType = "suggestion";
   static String historyType = "history";
 
-  ItemSuggestion({
-    required this.id,
-    required this.title,
-    this.imageUrl,
-    this.type,
-    this.logo,
-    this.giro,
-    this.web,
-    this.description,
-    this.locations,
-    this.phones,
-    this.emails,
-    this.discounted
-  });
+  ItemSuggestion(
+      {required this.id,
+      required this.title,
+      this.imageUrl,
+      this.type,
+      this.logo,
+      this.giro,
+      this.web,
+      this.description,
+      this.locations,
+      this.phones,
+      this.emails,
+      this.discounted});
 
   factory ItemSuggestion.fromJson(Map<String, dynamic> jsonData, String type) {
     return ItemSuggestion(
-      id: jsonData['id'] ?? -1,
+      id: jsonData['id_Afiliacion'] ?? -1,
       title: jsonData['nombre'] ?? "",
       imageUrl: jsonData['logo'] ?? "",
       type: type,
@@ -49,36 +47,39 @@ class ItemSuggestion {
       locations: jsonData['ubicaciones'] ?? [],
       phones: jsonData['telefonos'] ?? [],
       emails: jsonData['correos'] ?? [],
-      discounted: (jsonData['descuentos'] ?? {}).isNotEmpty ? Discounted.decode(jsonData['descuentos'] ?? {}) : [],
+      discounted: (jsonData['descuentos'] ?? {}).isNotEmpty
+          ? Discounted.decode(jsonData['descuentos'] ?? {})
+          : [],
     );
   }
 
   @override
-  bool operator == (Object other) {
+  bool operator ==(Object other) {
     if (other.runtimeType != runtimeType) {
       return false;
     }
     return other is ItemSuggestion && other.title == title;
   }
+
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'nombre': title,
-    'logo': imageUrl,
-  };
+        'id': id,
+        'nombre': title,
+        'logo': imageUrl,
+      };
 
   static String encode(List<ItemSuggestion> items) => json.encode(
-    items.map<Map<String, dynamic>>((item) => item.toJson()).toList(),
-  );
+        items.map<Map<String, dynamic>>((item) => item.toJson()).toList(),
+      );
 
   static List<ItemSuggestion> decode(String items, String type) {
-      return (json.decode(items) as List<dynamic>)
-          .map<ItemSuggestion>((item) => ItemSuggestion.fromJson(item,type))
-          .toList();
-
+    return (json.decode(items) as List<dynamic>)
+        .map<ItemSuggestion>((item) => ItemSuggestion.fromJson(item, type))
+        .toList();
   }
 
-  static List<dynamic> getListFromResponse(dynamic responseBody){
-    return responseBody['data'] as List<dynamic>; //supposing response has data member
+  static List<dynamic> getListFromResponse(dynamic responseBody) {
+    return responseBody['data']
+        as List<dynamic>; //supposing response has data member
   }
 
   @override

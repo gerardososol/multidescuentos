@@ -21,7 +21,7 @@ class BrandCard extends StatelessWidget {
     required Image defaultImage,
     required Image loadImage,
     required ValueChanged<String> onValue,
-    ItemSuggestionMap? itemSuggestionMap,
+    required ItemSuggestionMap itemSuggestionMap,
   }) {
     List<BrandCard> returnList = [];
     for (var element in suggestionList) {
@@ -31,9 +31,7 @@ class BrandCard extends StatelessWidget {
         loadImage: loadImage,
         onValue: onValue,
       ));
-      if (itemSuggestionMap != null) {
-        itemSuggestionMap.addItem(element.id.toString(), element);
-      }
+      itemSuggestionMap.addItem(element.id.toString(), element);
     }
     return returnList;
   }

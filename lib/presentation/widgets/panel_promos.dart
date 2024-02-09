@@ -13,34 +13,35 @@ class PanelPromos extends StatelessWidget {
       "http://multidescuentos.com.mx/logos/afiliaciones/20230616_130631_WhatsApp%20Image%202023-06-15%20at%2020.39.23.jpeg";
   final Image defaultImage = Image.network(defaultImageUrl, width: 135);
   final Image loadImage = Image.network(loadImageUrl, width: 135);
-  ItemSuggestionMap? itemSuggestionMap;
+  final ItemSuggestionMap itemSuggestionMap;
 
   PanelPromos({
     super.key,
+    required this.itemSuggestionMap,
   });
 
   @override
   Widget build(BuildContext context) {
-    ItemSuggestionProvider searchProvider = context.watch<ItemSuggestionProvider>();
-    
+    ItemSuggestionProvider searchProvider =
+        context.watch<ItemSuggestionProvider>();
+
     List<BrandCard> brandCardsData = BrandCard.getListBrandCard(
-        suggestionList: searchProvider.itemsResult, 
-        defaultImage: defaultImage, 
-        loadImage: loadImage, 
+        suggestionList: searchProvider.itemsResult,
+        defaultImage: defaultImage,
+        loadImage: loadImage,
         onValue: (value) {
-          context.pushNamed(ViewPromo.name, pathParameters: {'itemSuggestionId': value});
-        }
-    );
+          context.pushNamed(ViewPromo.name,
+              pathParameters: {'itemSuggestionId': value});
+        },
+        itemSuggestionMap: itemSuggestionMap);
 
     return GridView.builder(
-      itemCount: brandCardsData.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2),
-      itemBuilder: (context, index) {
-        return Padding(
-            padding: const EdgeInsets.all(5),
-            child: brandCardsData[index]);
-      }
-    );
+        itemCount: brandCardsData.length,
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (context, index) {
+          return Padding(
+              padding: const EdgeInsets.all(5), child: brandCardsData[index]);
+        });
   }
 }

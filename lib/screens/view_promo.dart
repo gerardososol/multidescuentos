@@ -13,8 +13,8 @@ class ViewPromo extends StatelessWidget {
   Widget build(BuildContext context) {
     ItemSuggestionMap itemSuggestionMap = context.watch<ItemSuggestionMap>();
     ItemSuggestion itemSuggestion =
-        itemSuggestionMap.mapIS[itemSuggestionID.toString()]
-        ?? ItemSuggestion(id: -1, title: "Error");
+        itemSuggestionMap.mapIS[itemSuggestionID.toString()] ??
+            ItemSuggestion(id: -1, title: "Error");
     _CustomSliverAppBar customSliverAppBar = _CustomSliverAppBar(
       itemSuggestion: itemSuggestion,
       defaultImage: itemSuggestionMap.defaultImage ??
@@ -26,11 +26,10 @@ class ViewPromo extends StatelessWidget {
         slivers: [
           customSliverAppBar,
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => _PromoDetails(itemSuggestion: itemSuggestion),
-              childCount: 1
-            )
-          ),
+              delegate: SliverChildBuilderDelegate(
+                  (context, index) =>
+                      _PromoDetails(itemSuggestion: itemSuggestion),
+                  childCount: 1)),
         ],
       ),
     );
@@ -39,7 +38,8 @@ class ViewPromo extends StatelessWidget {
 
 class _PromoDetails extends StatelessWidget {
   final ItemSuggestion itemSuggestion;
-  const _PromoDetails({Key? key, required this.itemSuggestion}) : super(key: key);
+  const _PromoDetails({Key? key, required this.itemSuggestion})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +50,7 @@ class _PromoDetails extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-            ],
+            children: [],
           ),
         )
       ],
@@ -60,33 +58,35 @@ class _PromoDetails extends StatelessWidget {
   }
 }
 
-
 class _CustomSliverAppBar extends StatelessWidget {
   ItemSuggestion itemSuggestion;
   final Image defaultImage;
 
-  _CustomSliverAppBar({Key? key, required this.itemSuggestion, required this.defaultImage})
-    : super(key: key);
+  _CustomSliverAppBar(
+      {Key? key, required this.itemSuggestion, required this.defaultImage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
-  Image image = Image.network(
+
+    Image image = Image.network(
       itemSuggestion.imageUrl!,
       fit: BoxFit.cover,
-      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+      loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent? loadingProgress) {
         if (loadingProgress == null) return child;
         return Center(
           child: CircularProgressIndicator(
             value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                ? loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes!
                 : null,
           ),
         );
       },
     );
-    
+
     return SliverAppBar(
       foregroundColor: Colors.white,
       backgroundColor: Colors.red,
@@ -109,8 +109,8 @@ class _CustomSliverAppBar extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: [0.7,1.0],
-                    colors: [Colors.transparent,Colors.black87],
+                    stops: [0.7, 1.0],
+                    colors: [Colors.transparent, Colors.black87],
                   ),
                 ),
               ),
@@ -120,8 +120,8 @@ class _CustomSliverAppBar extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
-                    stops: [0.0,0.3],
-                    colors: [Colors.black87,Colors.transparent],
+                    stops: [0.0, 0.3],
+                    colors: [Colors.black87, Colors.transparent],
                   ),
                 ),
               ),
