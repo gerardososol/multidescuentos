@@ -68,45 +68,33 @@ class BrandCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               imagen,
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1),
-                          color: Colors.red,
-                        ),
-                        child: const Text(
-                          '10%',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Roboto',
-                            letterSpacing: 0.5,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const Text(
-                        'Descuento',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontFamily: 'Roboto',
-                          letterSpacing: 0.5,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(1),
+                    color: Colors.red,
+                  ),
+                  child: const Text(
+                    '10%',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Roboto',
+                      letterSpacing: 0.5,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const VerticalDivider(width: 3),
                 const Text(
-                  '05d:12h',
+                  'Descuento',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.red,
                     fontFamily: 'Roboto',
                     letterSpacing: 0.5,
                     fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ]),
